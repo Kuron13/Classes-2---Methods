@@ -1,4 +1,4 @@
-import createCharacter, { Character, Swordsman } from '../app.js'
+import createCharacter, { Character, Swordsman} from '../app.js'
 
 let testChar = new Character('test', 'Bowman', 25, 25);
 
@@ -10,12 +10,25 @@ const charList = [
   ['Зомби', 'Zombie', {name: 'Зомби', type: 'Zombie', health: 100, level: 1, attack: 40, defence: 10}],
   ['Демон', 'Daemon', {name: 'Демон', type: 'Daemon', health: 100, level: 1, attack: 10, defence: 40}]
 ]
+
+const createErrorsList = [
+  ['Я', 'Swordsman', "Неверные данные. Имя должно содержать 2-10 символов."],
+  ['Великий мастер', 'Magician', "Неверные данные. Имя должно содержать 2-10 символов."],
+  ['Лучший', 'Cobold', "Неверные данные. Такого типа персонажа не существует."],
+]
   
+const levelUpErrorsList = [
+  ['Обморок', 0, "Нельзя повысить уровень мёртвому персонажу."],
+  ['Мёртв', -15, "Нельзя повысить уровень мёртвому персонажу."]
+]
+
 test.each(charList)('Testing create character %n with type %t', (name, type, expected) => {
   expected.levelUp = testChar.levelUp
   expected.damage = testChar.damage
   const result = createCharacter(name, type);
-  expect(result).toEqual(expected);
+  const expectedObj = [expected.data, type]
+  const resultObj = [result.data, result.constructor.name]
+  expect(resultObj).toEqual(expectedObj);
 });
 
 test("Testing character's levelUp", () => {
@@ -37,4 +50,24 @@ test("Testing character's damage with 20 points", () => {
   healthy.damage(20)
   const result = healthy
   expect(result).toEqual(wounded);
+});
+
+test.each(createErrorsList)('Testing create Character %n with type %t with error', (name, type, expected) => {
+  expect(() => createCharacter(name, type)).toThrow(expected);
+});
+
+test.each(createErrorsList)('Testing create Character in Class with type %t with error', (name, type, expected) => {
+  expect(() => new Character(name, type, 20, 20)).toThrow(expected);
+});
+
+test.each(levelUpErrorsList)("Testing character's %n, levelUp with error: with health %h", (name, health, expected) => {
+  const result = new Swordsman(name);
+  result['health'] = health
+  expect(() => result.levelUp()).toThrow(expected);
+});
+
+test("Testing character's damage with 20 points with error: health -15", () => {
+  const result = new Swordsman('Мёртв');
+  result['health'] = -15
+  expect(() => result.damage()).toThrow("Персонаж уже мёртв.");
 });

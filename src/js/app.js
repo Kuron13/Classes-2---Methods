@@ -22,22 +22,22 @@ export class Character {
   }
 
   levelUp = function() {
-    if (this.level > 0) {
+    if (this.health > 0) {
       this.level += 1
       this.attack *= 1.2
       this.defence *= 1.2
       this.health = 100
+      console.log('Уровень получен')
     } else {
       throw new Error("Нельзя повысить уровень мёртвому персонажу.");
     }
-    console.log('Уровень получен')
   }
 
   damage = function(points) {
     if (this.health >= 0) {
       this.health -= points * (1 - this.defence / 100)
     } else {
-      throw new Error("Нельзя повысить уровень мёртвому персонажу.");
+      throw new Error("Персонаж уже мёртв.");
     }
     console.log('Удар получен')
   }
@@ -90,7 +90,11 @@ const allClasses = {
 }
 
 export default function createCharacter (name, type) {
-  const char = new allClasses[type](name);
-  console.log(char)
-  return char
+  if (type in allClasses) {
+    const char = new allClasses[type](name);
+    console.log(char)
+    return char
+  } else {
+    throw new Error("Неверные данные. Такого типа персонажа не существует.");
+  }
 }
