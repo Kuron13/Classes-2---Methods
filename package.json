@@ -1,7 +1,6 @@
 {
   "name": "ajs",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development",
@@ -33,5 +32,14 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kuron13/Classes-2---Methods.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kuron13/Classes-2---Methods/issues"
+  },
+  "homepage": "https://github.com/Kuron13/Classes-2---Methods#readme",
+  "description": ""
 }
